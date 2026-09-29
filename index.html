@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planinske koze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(180deg, 
+                #87CEEB 0%,     /* Sky blue */
+                #4FC3F7 25%,    /* Light blue */
+                #26C6DA 50%,    /* Cyan */
+                #26A69A 75%,    /* Teal */
+                #66BB6A 100%    /* Mountain green */
+            );
+            min-height: 100vh;
+        }
+        
+
+        
+        .stone-button {
+            background: linear-gradient(145deg, #D3D3D3, #A9A9A9);
+            border: 2px solid #696969;
+            box-shadow: 
+                inset 2px 2px 4px rgba(255,255,255,0.3),
+                inset -2px -2px 4px rgba(0,0,0,0.3),
+                4px 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.1s ease;
+        }
+        
+        .stone-button:hover {
+            background: linear-gradient(145deg, #E0E0E0, #B8B8B8);
+        }
+        
+        .stone-button:active {
+            transform: translateY(2px);
+            box-shadow: 
+                inset 2px 2px 4px rgba(0,0,0,0.3),
+                inset -2px -2px 4px rgba(255,255,255,0.3),
+                2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .stone-button:disabled {
+            background: linear-gradient(145deg, #999, #777);
+            color: #555;
+            cursor: not-allowed;
+        }
+        
+        .basic-button {
+            background: linear-gradient(145deg, #E8F4FD, #B3D9F2);
+            border: 2px solid #4A90E2;
+            box-shadow: 
+                inset 2px 2px 4px rgba(255,255,255,0.4),
+                inset -2px -2px 4px rgba(74,144,226,0.2),
+                3px 3px 6px rgba(0,0,0,0.15);
+            transition: all 0.1s ease;
+        }
+        
+        .basic-button:hover {
+            background: linear-gradient(145deg, #F0F8FF, #C7E2F7);
+            transform: translateY(-1px);
+        }
+        
+        .basic-button:active {
+            transform: translateY(1px);
+            box-shadow: 
+                inset 2px 2px 4px rgba(74,144,226,0.3),
+                inset -2px -2px 4px rgba(255,255,255,0.4),
+                1px 1px 3px rgba(0,0,0,0.15);
+        }
+        
+        .player-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(139, 115, 85, 0.3);
+        }
+        
+        .title-text {
+            font-family: 'Fredoka One', cursive;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .goat {
+            font-size: 3rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .jumping-goat {
+            display: inline-block;
+            font-size: 1.5rem;
+            animation: jump 1s infinite;
+        }
+        
+        .jumping-goat:nth-child(2) { animation-delay: 0.2s; }
+        .jumping-goat:nth-child(3) { animation-delay: 0.4s; }
+        .jumping-goat:nth-child(4) { animation-delay: 0.6s; }
+        
+        @keyframes jump {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(-10deg); }
+            50% { transform: translateY(-20px) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(10deg); }
+        }
+        
+        .winner-card {
+            background: linear-gradient(145deg, #FFD700, #FFA500);
+            border: 3px solid #FF8C00;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-6 max-w-md">
+        <!-- Header -->
+        <div class="text-center mb-6">
+            <div class="goat mb-2">🐐</div>
+            <h1 class="title-text text-4xl font-bold text-gray-800 mb-1" style="color: #2D4A22; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">Planinske koze <span class="text-2xl">(Mountain goats)</span></h1>
+            <p class="text-sm font-semibold" style="color: #2D4A22; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">designed by Kaja</p>
+            
+            <!-- Mountain illustration -->
+            <div class="mt-4 relative">
+                <svg viewBox="0 0 300 120" class="w-full h-24">
+                    <!-- Sky gradient -->
+                    <defs>
+                        <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+                        </linearGradient>
+                        <radialGradient id="sunGradient" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+                        </radialGradient>
+                    </defs>
+                    
+                    <!-- Sky background -->
+                    <rect width="300" height="120" fill="url(#skyGradient)"/>
+                    
+                    <!-- Sun -->
+                    <circle cx="250" cy="25" r="18" fill="url(#sunGradient)" stroke="#FFD700" stroke-width="2"/>
+                    <g stroke="#FFD700" stroke-width="2" opacity="0.8">
+                        <line x1="250" y1="5" x2="250" y2="12"/>
+                        <line x1="250" y1="38" x2="250" y2="45"/>
+                        <line x1="230" y1="25" x2="237" y2="25"/>
+                        <line x1="263" y1="25" x2="270" y2="25"/>
+                        <line x1="236" y1="11" x2="241" y2="16"/>
+                        <line x1="259" y1="34" x2="264" y2="39"/>
+                        <line x1="264" y1="11" x2="259" y2="16"/>
+                        <line x1="241" y1="34" x2="236" y2="39"/>
+                    </g>
+                    
+                    <!-- Clouds -->
+                    <g fill="white" opacity="0.8">
+                        <ellipse cx="50" cy="20" rx="15" ry="8"/>
+                        <ellipse cx="45" cy="18" rx="12" ry="6"/>
+                        <ellipse cx="55" cy="18" rx="10" ry="5"/>
+                        
+                        <ellipse cx="180" cy="15" rx="12" ry="6"/>
+                        <ellipse cx="175" cy="13" rx="8" ry="4"/>
+                        <ellipse cx="185" cy="13" rx="9" ry="4"/>
+                    </g>
+                    
+                    <!-- Back mountains -->
+                    <polygon points="0,120 60,40 120,55 180,35 240,50 300,25 300,120" 
+                             fill="#6B5B95" opacity="0.7"/>
+                    
+                    <!-- Middle mountains -->
+                    <polygon points="0,120 40,60 100,45 160,65 220,40 280,55 300,45 300,120" 
+                             fill="#8B7355"/>
+                    
+                    <!-- Front mountains with snow caps -->
+                    <polygon points="0,120 80,50 140,70 200,45 260,65 300,55 300,120" 
+                             fill="#A0845C"/>
+                    
+                    <!-- Snow caps -->
+                    <polygon points="70,55 80,50 90,55 85,60" fill="white" opacity="0.9"/>
+                    <polygon points="190,50 200,45 210,50 205,55" fill="white" opacity="0.9"/>
+                    
+                    <!-- Trees -->
+                    <g fill="#228B22">
+                        <polygon points="25,100 30,85 35,100" />
+                        <polygon points="23,95 32,80 37,95" />
+                        <rect x="29" y="100" width="2" height="8" fill="#8B4513"/>
+                        
+                        <polygon points="110,90 115,75 120,90" />
+                        <polygon points="108,85 117,70 122,85" />
+                        <rect x="114" y="90" width="2" height="8" fill="#8B4513"/>
+                        
+                        <polygon points="270,95 275,80 280,95" />
+                        <polygon points="268,90 277,75 282,90" />
+                        <rect x="274" y="95" width="2" height="8" fill="#8B4513"/>
+                    </g>
+                    
+                    <!-- Goats on mountains -->
+                    <g font-size="12" fill="white">
+                        <text x="65" y="65" text-anchor="middle">🐐</text>
+                        <text x="150" y="75" text-anchor="middle">🐑</text>
+                        <text x="240" y="50" text-anchor="middle">🐐</text>
+                    </g>
+                    
+                    <!-- Grass -->
+                    <g stroke="#32CD32" stroke-width="1" opacity="0.6">
+                        <line x1="15" y1="110" x2="17" y2="105"/>
+                        <line x1="20" y1="112" x2="22" y2="107"/>
+                        <line x1="45" y1="108" x2="47" y2="103"/>
+                        <line x1="85" y1="115" x2="87" y2="110"/>
+                        <line x1="125" y1="105" x2="127" y2="100"/>
+                        <line x1="165" y1="110" x2="167" y2="105"/>
+                        <line x1="205" y1="108" x2="207" y2="103"/>
+                        <line x1="245" y1="112" x2="247" y2="107"/>
+                        <line x1="285" y1="110" x2="287" y2="105"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Player Count Selection -->
+        <div id="playerSelection" class="player-card rounded-xl p-6 mb-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Broj igrača</h2>
+            <div class="grid grid-cols-4 gap-3">
+                <button onclick="startGame(1)" class="stone-button rounded-lg py-3 text-lg font-bold text-gray-800">1</button>
+                <button onclick="startGame(2)" class="stone-button rounded-lg py-3 text-lg font-bold text-gray-800">2</button>
+                <button onclick="startGame(3)" class="stone-button rounded-lg py-3 text-lg font-bold text-gray-800">3</button>
+                <button onclick="startGame(4)" class="stone-button rounded-lg py-3 text-lg font-bold text-gray-800">4</button>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div id="gameArea" class="hidden">
+            <!-- Players -->
+            <div id="playersContainer"></div>
+            
+            <!-- Game Control Buttons -->
+            <div class="text-center mt-6 space-y-3">
+                <button onclick="endGame()" class="stone-button rounded-lg px-8 py-3 text-lg font-bold text-gray-800 w-full">
+                    🏆 Kraj igre
+                </button>
+                <button onclick="resetGame()" class="stone-button rounded-lg px-8 py-3 text-lg font-bold text-gray-800 w-full">
+                    🔄 Nova igra
+                </button>
+            </div>
+        </div>
+
+        <!-- Winner Screen -->
+        <div id="winnerScreen" class="hidden">
+            <div class="player-card rounded-xl p-6 mb-6">
+                <h2 class="title-text text-3xl font-bold text-center mb-6" style="color: #2D4A22; text-shadow: 2px 2px 4px rgba(255,255,255,0.8);">🏆 Rezultati igre 🏆</h2>
+                
+                <div id="resultsContainer" class="space-y-4"></div>
+                
+                <div class="text-center mt-6">
+                    <button onclick="resetGame()" class="stone-button rounded-lg px-8 py-3 text-lg font-bold text-gray-800">
+                        🔄 Nova igra
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let players = [];
+        let currentPlayerCount = 0;
+
+        function startGame(playerCount) {
+            currentPlayerCount = playerCount;
+            players = [];
+            
+            for (let i = 0; i < playerCount; i++) {
+                players.push({
+                    name: `Igrač ${i + 1}`,
+                    score: 0,
+                    basicScores: {},
+                    bonusScores: { 15: false, 12: false, 9: false, 6: false },
+                    history: []
+                });
+            }
+            
+            document.getElementById('playerSelection').classList.add('hidden');
+            document.getElementById('gameArea').classList.remove('hidden');
+            renderPlayers();
+        }
+
+        function renderPlayers() {
+            const container = document.getElementById('playersContainer');
+            container.innerHTML = '';
+            
+            players.forEach((player, index) => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player-card rounded-xl p-4 mb-4';
+                
+                playerDiv.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl" style="transform: scaleX(-1);">${getGoatIcon(index)}</span>
+                            <input type="text" value="${player.name}" 
+                                   onchange="updatePlayerName(${index}, this.value)"
+                                   class="text-lg font-bold bg-transparent border-b-2 border-gray-400 focus:border-blue-500 outline-none px-2 py-1">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="undoLastMove(${index})" 
+                                    class="w-8 h-8 rounded-full bg-green-500 hover:bg-green-600 text-white font-bold text-sm flex items-center justify-center shadow-md transition-all duration-150"
+                                    ${player.history && player.history.length > 0 ? '' : 'disabled style="background-color: #ccc; cursor: not-allowed;"'}>
+                                ↶
+                            </button>
+                            <div class="text-2xl font-bold text-blue-600">${player.score}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h4 class="text-sm font-semibold text-gray-600 mb-2">Osnovni bodovi</h4>
+                        <div class="grid grid-cols-6 gap-2">
+                            ${[5, 6, 7, 8, 9, 10].map(num => `
+                                <button onclick="addBasicScore(${index}, ${num})" 
+                                        class="basic-button rounded-lg py-2 text-xs font-bold text-blue-800 flex flex-col items-center">
+                                    <span class="text-sm">${num}</span>
+                                    <span class="text-xs text-blue-600">${player.basicScores[num] || 0}x</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-600 mb-2">Bonus bodovi</h4>
+                        <div class="grid grid-cols-4 gap-2">
+                            ${[15, 12, 9, 6].map(num => `
+                                <button onclick="addBonusScore(${index}, ${num})" 
+                                        class="stone-button rounded-lg py-2 text-sm font-bold text-gray-800 ${player.bonusScores[num] ? 'opacity-50' : ''}"
+                                        ${player.bonusScores[num] ? 'disabled' : ''}>
+                                    ${num}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(playerDiv);
+            });
+        }
+
+        function updatePlayerName(playerIndex, newName) {
+            players[playerIndex].name = newName || `Igrač ${playerIndex + 1}`;
+        }
+
+        function addBasicScore(playerIndex, score) {
+            // Save current state to history
+            players[playerIndex].history.push({
+                type: 'basic',
+                score: score,
+                previousScore: players[playerIndex].score,
+                previousBasicScores: {...players[playerIndex].basicScores}
+            });
+            
+            players[playerIndex].score += score;
+            
+            if (!players[playerIndex].basicScores[score]) {
+                players[playerIndex].basicScores[score] = 0;
+            }
+            players[playerIndex].basicScores[score]++;
+            
+            renderPlayers();
+            
+            // Visual feedback
+            const button = event.target;
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 100);
+        }
+
+        function addBonusScore(playerIndex, score) {
+            if (!players[playerIndex].bonusScores[score]) {
+                // Save current state to history
+                players[playerIndex].history.push({
+                    type: 'bonus',
+                    score: score,
+                    previousScore: players[playerIndex].score,
+                    previousBonusScores: {...players[playerIndex].bonusScores}
+                });
+                
+                players[playerIndex].score += score;
+                players[playerIndex].bonusScores[score] = true;
+                renderPlayers();
+                
+                // Visual feedback
+                const button = event.target;
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    button.style.transform = 'scale(1)';
+                }, 100);
+            }
+        }
+
+        function undoLastMove(playerIndex) {
+            const player = players[playerIndex];
+            if (player.history.length === 0) return;
+            
+            const lastMove = player.history.pop();
+            
+            if (lastMove.type === 'basic') {
+                player.score = lastMove.previousScore;
+                player.basicScores = lastMove.previousBasicScores;
+            } else if (lastMove.type === 'bonus') {
+                player.score = lastMove.previousScore;
+                player.bonusScores = lastMove.previousBonusScores;
+            }
+            
+            renderPlayers();
+        }
+
+        function getGoatIcon(playerIndex) {
+            const goatIcons = ['🌟', '🎈', '🎉', '🌈'];
+            return goatIcons[playerIndex % goatIcons.length];
+        }
+
+        function endGame() {
+            // Sort players by score (highest first)
+            const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
+            
+            // Hide game area and show winner screen
+            document.getElementById('gameArea').classList.add('hidden');
+            document.getElementById('winnerScreen').classList.remove('hidden');
+            
+            // Render results
+            const resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = '';
+            
+            sortedPlayers.forEach((player, index) => {
+                const position = index + 1;
+                const isWinner = position === 1;
+                
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `rounded-lg p-4 flex items-center justify-between ${isWinner ? 'winner-card' : 'bg-white bg-opacity-80'}`;
+                
+                const jumpingGoats = isWinner ? 
+                    '<span class="jumping-goat">🐐</span><span class="jumping-goat">🐐</span><span class="jumping-goat">🐐</span>' : 
+                    '';
+                
+                const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : `${position}.`;
+                
+                resultDiv.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl font-bold ${isWinner ? 'text-white' : 'text-gray-700'}">${medal}</span>
+                        <div>
+                            <div class="text-lg font-bold ${isWinner ? 'text-white' : 'text-gray-800'}">${player.name}</div>
+                            ${isWinner ? `<div class="text-sm text-yellow-100">POBJEDNIK! ${jumpingGoats}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold ${isWinner ? 'text-white' : 'text-blue-600'}">${player.score}</div>
+                `;
+                
+                resultsContainer.appendChild(resultDiv);
+            });
+        }
+
+        function resetGame() {
+            document.getElementById('gameArea').classList.add('hidden');
+            document.getElementById('winnerScreen').classList.add('hidden');
+            document.getElementById('playerSelection').classList.remove('hidden');
+            players = [];
+            currentPlayerCount = 0;
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'962c502430bce0d9',t:'MTc1MzExNzg0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
